@@ -168,7 +168,7 @@ defmodule TraceLogViewerWeb.TraceLogLive do
   def render(assigns) do
     ~H"""
     <Layouts.app flash={@flash}>
-      <div id="trace-log-viewer" class="space-y-6" phx-hook=".CopyToClipboard">
+      <div id="trace-log-viewer" class="space-y-6" phx-hook="CopyToClipboard">
         <%!-- Header --%>
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-3">
@@ -399,7 +399,7 @@ defmodule TraceLogViewerWeb.TraceLogLive do
               id="string-modal"
               class="relative mx-4 max-w-7xl w-full max-h-[85vh] flex flex-col bg-base-100 rounded-xl shadow-2xl border border-base-300 animate-scale-in"
               phx-click-away="close_string_modal"
-              phx-hook=".StringModalSearch"
+              phx-hook="StringModalSearch"
             >
               <%!-- Modal header --%>
               <div class="flex items-center justify-between px-5 py-3 border-b border-base-300">
@@ -525,7 +525,7 @@ defmodule TraceLogViewerWeb.TraceLogLive do
                     <div
                       id="markdown-body"
                       class="prose prose-sm max-w-none dark:prose-invert"
-                      phx-hook=".MarkdownCodeCopy"
+                      phx-hook="MarkdownCodeCopy"
                       phx-update="ignore"
                     >
                       {render_markdown(@string_modal_content)}
@@ -537,200 +537,6 @@ defmodule TraceLogViewerWeb.TraceLogLive do
         <% end %>
       </div>
     </Layouts.app>
-    <script :type={Phoenix.LiveView.ColocatedHook} name=".CopyToClipboard">
-      export default {
-        mounted() {
-          this.el.addEventListener("click", (e) => {
-            const btn = e.target.closest("[data-copy-text]");
-            if (!btn) return;
-            e.stopPropagation();
-            const text = btn.getAttribute("data-copy-text");
-            navigator.clipboard.writeText(text).then(() => {
-              const icon = btn.querySelector("svg, span[class*='hero-']");
-              btn.classList.add("text-success");
-              btn.classList.remove("text-base-content/30", "text-base-content/40");
-              const originalTitle = btn.title;
-              btn.title = "Copied!";
-              setTimeout(() => {
-                btn.classList.remove("text-success");
-                btn.classList.add("text-base-content/30");
-                btn.title = originalTitle;
-              }, 1500);
-            });
-          });
-        }
-      }
-    </script>
-    <script :type={Phoenix.LiveView.ColocatedHook} name=".StringModalSearch">
-      export default {
-        mounted() {
-          this._input = this.el.querySelector("[data-search-input]");
-          this._content = this.el.querySelector("[data-search-content]");
-          this._counter = this.el.querySelector("[data-match-count]");
-          this._prevBtn = this.el.querySelector("[data-search-prev]");
-          this._nextBtn = this.el.querySelector("[data-search-next]");
-          this._debounce = null;
-          this._currentIdx = -1;
-          this._totalMatches = 0;
-          if (!this._input || !this._content) return;
-
-          this._input.addEventListener("input", () => {
-            clearTimeout(this._debounce);
-            this._debounce = setTimeout(() => { this._highlight(); this._goTo(0); }, 150);
-          });
-
-          // Enter = next, Shift+Enter = prev
-          this._input.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              if (e.shiftKey) { this._goPrev(); } else { this._goNext(); }
-            }
-          });
-
-          if (this._prevBtn) this._prevBtn.addEventListener("click", () => this._goPrev());
-          if (this._nextBtn) this._nextBtn.addEventListener("click", () => this._goNext());
-
-          // Cmd/Ctrl+F focuses the search input
-          this._keyHandler = (e) => {
-            if ((e.metaKey || e.ctrlKey) && e.key === "f") {
-              e.preventDefault();
-              this._input.focus();
-              this._input.select();
-            }
-            if (e.key === "Escape" && document.activeElement === this._input) {
-              this._input.value = "";
-              this._highlight();
-              this._input.blur();
-            }
-          };
-          this.el.addEventListener("keydown", this._keyHandler);
-        },
-        updated() {
-          this._content = this.el.querySelector("[data-search-content]");
-          if (this._input && this._input.value) {
-            setTimeout(() => { this._highlight(); this._goTo(0); }, 50);
-          }
-        },
-        _goNext() {
-          if (this._totalMatches === 0) return;
-          this._goTo((this._currentIdx + 1) % this._totalMatches);
-        },
-        _goPrev() {
-          if (this._totalMatches === 0) return;
-          this._goTo((this._currentIdx - 1 + this._totalMatches) % this._totalMatches);
-        },
-        _goTo(idx) {
-          const marks = this._content.querySelectorAll("mark[data-search-hl]");
-          if (marks.length === 0) { this._currentIdx = -1; this._updateCounter(); return; }
-          // Remove active class from previous
-          marks.forEach(m => m.classList.remove("search-highlight-active"));
-          this._currentIdx = idx;
-          const target = marks[idx];
-          if (target) {
-            target.classList.add("search-highlight-active");
-            target.scrollIntoView({ block: "center", behavior: "smooth" });
-          }
-          this._updateCounter();
-        },
-        _updateCounter() {
-          if (!this._counter) return;
-          if (this._totalMatches === 0) {
-            this._counter.textContent = this._input.value.trim() ? "0" : "";
-          } else {
-            this._counter.textContent = `${this._currentIdx + 1}/${this._totalMatches}`;
-          }
-        },
-        _highlight() {
-          const query = this._input.value.trim();
-          const container = this._content;
-          if (!container) return;
-
-          // Remove existing marks
-          container.querySelectorAll("mark[data-search-hl]").forEach(m => {
-            const parent = m.parentNode;
-            parent.replaceChild(document.createTextNode(m.textContent), m);
-            parent.normalize();
-          });
-
-          this._currentIdx = -1;
-          this._totalMatches = 0;
-
-          if (!query) {
-            this._updateCounter();
-            return;
-          }
-
-          let count = 0;
-          const regex = new RegExp(query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi");
-
-          const walk = (node) => {
-            if (node.nodeType === Node.TEXT_NODE) {
-              const text = node.textContent;
-              if (!regex.test(text)) return;
-              regex.lastIndex = 0;
-
-              const frag = document.createDocumentFragment();
-              let lastIdx = 0;
-              let match;
-              while ((match = regex.exec(text)) !== null) {
-                if (match.index > lastIdx) {
-                  frag.appendChild(document.createTextNode(text.slice(lastIdx, match.index)));
-                }
-                const mark = document.createElement("mark");
-                mark.setAttribute("data-search-hl", "");
-                mark.className = "search-highlight";
-                mark.textContent = match[0];
-                frag.appendChild(mark);
-                count++;
-                lastIdx = regex.lastIndex;
-              }
-              if (lastIdx < text.length) {
-                frag.appendChild(document.createTextNode(text.slice(lastIdx)));
-              }
-              node.parentNode.replaceChild(frag, node);
-            } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName !== "MARK") {
-              Array.from(node.childNodes).forEach(walk);
-            }
-          };
-
-          walk(container);
-          this._totalMatches = count;
-        }
-      }
-    </script>
-    <script :type={Phoenix.LiveView.ColocatedHook} name=".MarkdownCodeCopy">
-      export default {
-        mounted() { this._addCopyButtons(); },
-        updated() { this._addCopyButtons(); },
-        _addCopyButtons() {
-          this.el.querySelectorAll("pre").forEach(pre => {
-            if (pre.querySelector(".code-copy-btn")) return;
-            pre.style.position = "relative";
-
-            const btn = document.createElement("button");
-            btn.className = "code-copy-btn";
-            btn.title = "Copy code";
-            btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-3.5"><path fill-rule="evenodd" d="M15.988 3.012A2.25 2.25 0 0 0 13.75 1h-3.5a2.25 2.25 0 0 0-2.238 2.012c-.875.092-1.6.686-1.884 1.488H11A3 3 0 0 1 14 7.5v6.378a1.75 1.75 0 0 0 1.488-1.884V5.25a2.25 2.25 0 0 0-2.012-2.238ZM13.75 2.5a.75.75 0 0 0-.75-.75h-3.5a.75.75 0 0 0-.75.75v.25h5v-.25Z" clip-rule="evenodd" /><path fill-rule="evenodd" d="M3 6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6Zm2.5 1a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5ZM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5Zm.5 1.5a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3Z" clip-rule="evenodd" /></svg>`;
-
-            btn.addEventListener("click", (e) => {
-              e.stopPropagation();
-              const code = pre.querySelector("code");
-              const text = code ? code.textContent : pre.textContent;
-              navigator.clipboard.writeText(text).then(() => {
-                btn.classList.add("copied");
-                btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-3.5"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clip-rule="evenodd" /></svg>`;
-                setTimeout(() => {
-                  btn.classList.remove("copied");
-                  btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-3.5"><path fill-rule="evenodd" d="M15.988 3.012A2.25 2.25 0 0 0 13.75 1h-3.5a2.25 2.25 0 0 0-2.238 2.012c-.875.092-1.6.686-1.884 1.488H11A3 3 0 0 1 14 7.5v6.378a1.75 1.75 0 0 0 1.488-1.884V5.25a2.25 2.25 0 0 0-2.012-2.238ZM13.75 2.5a.75.75 0 0 0-.75-.75h-3.5a.75.75 0 0 0-.75.75v.25h5v-.25Z" clip-rule="evenodd" /><path fill-rule="evenodd" d="M3 6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6Zm2.5 1a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5ZM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5Zm.5 1.5a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3Z" clip-rule="evenodd" /></svg>`;
-                }, 1500);
-              });
-            });
-
-            pre.appendChild(btn);
-          });
-        }
-      }
-    </script>
     """
   end
 
