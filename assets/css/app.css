@@ -367,14 +367,21 @@ details > div {
 }
 
 /* Code copy button for markdown code blocks */
-.prose pre {
+.code-block-wrapper {
   position: relative;
+}
+
+/* Transfer margins from pre to wrapper so button positions relative to outer box */
+.code-block-wrapper > pre {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .code-copy-btn {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -390,7 +397,7 @@ details > div {
   backdrop-filter: blur(4px);
 }
 
-.prose pre:hover .code-copy-btn {
+.code-block-wrapper:hover > .code-copy-btn {
   opacity: 1;
 }
 

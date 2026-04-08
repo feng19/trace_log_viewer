@@ -8,8 +8,15 @@ const MarkdownCodeCopy = {
 
   _addCopyButtons() {
     this.el.querySelectorAll("pre").forEach(pre => {
-      if (pre.querySelector(".code-copy-btn")) return;
-      pre.style.position = "relative";
+      // Skip if already wrapped
+      const parent = pre.parentElement;
+      if (parent && parent.classList.contains("code-block-wrapper")) return;
+
+      // Wrap the <pre> in a positioned container that does NOT scroll
+      const wrapper = document.createElement("div");
+      wrapper.className = "code-block-wrapper";
+      pre.parentNode.insertBefore(wrapper, pre);
+      wrapper.appendChild(pre);
 
       const btn = document.createElement("button");
       btn.className = "code-copy-btn";
@@ -30,7 +37,8 @@ const MarkdownCodeCopy = {
         });
       });
 
-      pre.appendChild(btn);
+      // Append button to the wrapper, outside the scrollable <pre>
+      wrapper.appendChild(btn);
     });
   }
 };
