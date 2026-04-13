@@ -21,7 +21,6 @@ defmodule TraceLogViewerWeb.TraceLogLive do
      |> assign(:search, "")
      |> assign(:raw_text, "")
      |> assign(:stats, %{total: 0, calls: 0, returns: 0})
-     |> assign(:binary_modal_content, nil)
      |> assign(:string_modal_content, nil)
      |> assign(:string_modal_tab, "raw")
      |> allow_upload(:log_file, accept: :any, max_entries: 1, max_file_size: 50_000_000)}
@@ -54,6 +53,7 @@ defmodule TraceLogViewerWeb.TraceLogLive do
      |> assign(:stats, stats)
      |> assign(:filter, "all")
      |> assign(:search, "")
+     |> push_event("search_highlight", %{query: ""})
      |> stream(:log_entries, entries, reset: true)}
   end
 
@@ -69,6 +69,7 @@ defmodule TraceLogViewerWeb.TraceLogLive do
      |> assign(:stats, stats)
      |> assign(:filter, "all")
      |> assign(:search, "")
+     |> push_event("search_highlight", %{query: ""})
      |> stream(:log_entries, entries, reset: true)}
   end
 
@@ -85,6 +86,7 @@ defmodule TraceLogViewerWeb.TraceLogLive do
      socket
      |> assign(:filter, filter)
      |> assign(:entries_empty?, filtered == [])
+     |> push_event("search_highlight", %{query: socket.assigns.search})
      |> stream(:log_entries, filtered, reset: true)}
   end
 
@@ -101,6 +103,7 @@ defmodule TraceLogViewerWeb.TraceLogLive do
      socket
      |> assign(:search, search)
      |> assign(:entries_empty?, filtered == [])
+     |> push_event("search_highlight", %{query: search})
      |> stream(:log_entries, filtered, reset: true)}
   end
 
@@ -113,17 +116,8 @@ defmodule TraceLogViewerWeb.TraceLogLive do
      |> assign(:stats, %{total: 0, calls: 0, returns: 0})
      |> assign(:filter, "all")
      |> assign(:search, "")
+     |> push_event("search_highlight", %{query: ""})
      |> stream(:log_entries, [], reset: true)}
-  end
-
-  @impl true
-  def handle_event("show_binary", %{"content" => content}, socket) do
-    {:noreply, assign(socket, :binary_modal_content, content)}
-  end
-
-  @impl true
-  def handle_event("close_binary_modal", _params, socket) do
-    {:noreply, assign(socket, :binary_modal_content, nil)}
   end
 
   @impl true
@@ -157,6 +151,7 @@ defmodule TraceLogViewerWeb.TraceLogLive do
      |> assign(:stats, stats)
      |> assign(:filter, "all")
      |> assign(:search, "")
+     |> push_event("search_highlight", %{query: ""})
      |> stream(:log_entries, entries, reset: true)}
   end
 
@@ -340,51 +335,6 @@ defmodule TraceLogViewerWeb.TraceLogLive do
             </div>
             <div :for={{dom_id, entry} <- @streams.log_entries} id={dom_id}>
               <.log_entry entry={entry} />
-            </div>
-          </div>
-        <% end %>
-
-        <%!-- Binary content modal --%>
-        <%= if @binary_modal_content do %>
-          <div
-            id="binary-modal-overlay"
-            class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fade-in"
-          >
-            <div
-              id="binary-modal"
-              class="relative mx-4 max-w-3xl w-full max-h-[80vh] flex flex-col bg-base-100 rounded-xl shadow-2xl border border-base-300 animate-scale-in"
-              phx-click-away="close_binary_modal"
-            >
-              <%!-- Modal header --%>
-              <div class="flex items-center justify-between px-5 py-3 border-b border-base-300">
-                <div class="flex items-center gap-2">
-                  <span class="text-warning/70 font-mono text-sm font-semibold">
-                    &lt;&lt; Binary &gt;&gt;
-                  </span>
-                  <span class="text-xs text-base-content/40">
-                    {String.length(@binary_modal_content)} chars
-                  </span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <button
-                    data-copy-text={"<<#{@binary_modal_content}>>"}
-                    title="Copy binary"
-                    class="p-1.5 rounded-lg text-base-content/40 hover:text-primary hover:bg-base-200 transition-all duration-150 cursor-pointer"
-                  >
-                    <.icon name="hero-clipboard-document" class="size-4" />
-                  </button>
-                  <button
-                    phx-click="close_binary_modal"
-                    class="p-1.5 rounded-lg text-base-content/40 hover:text-error hover:bg-error/10 transition-all duration-150 cursor-pointer"
-                  >
-                    <.icon name="hero-x-mark" class="size-4" />
-                  </button>
-                </div>
-              </div>
-              <%!-- Modal body --%>
-              <div class="flex-1 overflow-auto p-5">
-                <pre class="font-mono text-sm text-warning/80 whitespace-pre-wrap break-all leading-relaxed">&lt;&lt;{@binary_modal_content}&gt;&gt;</pre>
-              </div>
             </div>
           </div>
         <% end %>

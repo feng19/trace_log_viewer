@@ -10,8 +10,6 @@ defmodule TraceLogViewer.LogParser do
   - `04:02:26.664250 #PID<0.123.0> Module.function(...)`
   """
 
-  alias TraceLogViewer.TermParser
-
   defstruct [
     :id,
     :line_number,
@@ -24,7 +22,6 @@ defmodule TraceLogViewer.LogParser do
     :args,
     :args_parsed,
     :return_value,
-    :return_parsed,
     :raw
   ]
 
@@ -108,8 +105,7 @@ defmodule TraceLogViewer.LogParser do
            arity: String.to_integer(arity),
            args: nil,
            args_parsed: nil,
-           return_value: String.trim(return_value),
-           return_parsed: TermParser.parse(String.trim(return_value))
+           return_value: String.trim(return_value)
          }}
 
       # Call format: Module.function(args...)
@@ -123,7 +119,7 @@ defmodule TraceLogViewer.LogParser do
           |> split_top_level_args()
           |> Enum.map(fn arg ->
             trimmed = String.trim(arg)
-            %{raw: trimmed, parsed: TermParser.parse(trimmed)}
+            %{raw: trimmed}
           end)
 
         {:ok,
@@ -134,8 +130,7 @@ defmodule TraceLogViewer.LogParser do
            arity: length(parsed_args),
            args: args_str,
            args_parsed: parsed_args,
-           return_value: nil,
-           return_parsed: nil
+           return_value: nil
          }}
 
       true ->

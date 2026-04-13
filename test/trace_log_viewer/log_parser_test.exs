@@ -71,7 +71,6 @@ defmodule TraceLogViewer.LogParserTest do
 
       assert entry.type == :return
       assert entry.return_value == ~s[{:ok, %MyApp.User{id: 42, name: "Alice"}}]
-      assert entry.return_parsed != nil
     end
 
     test "parses multiple lines preserving order" do
@@ -172,7 +171,6 @@ defmodule TraceLogViewer.LogParserTest do
 
       assert entry.type == :return
       assert entry.return_value == ":ok"
-      assert entry.return_parsed == {:literal, ":ok"}
     end
 
     test "handles large string argument without crashing" do
@@ -196,9 +194,6 @@ defmodule TraceLogViewer.LogParserTest do
 
       arg = Enum.at(entry.args_parsed, 0)
       assert arg.raw == ~S["hello\nworld"]
-      # The \n should be preserved as literal backslash-n in the parsed value
-      assert {:literal, val} = arg.parsed
-      assert String.contains?(val, "\\n")
     end
 
     test "parses function return with string containing literal \\n" do
@@ -209,8 +204,6 @@ defmodule TraceLogViewer.LogParserTest do
       entry = Enum.at(entries, 0)
       assert entry.type == :return
       assert entry.return_value == ~S["hello\nworld"]
-      assert {:literal, val} = entry.return_parsed
-      assert String.contains?(val, "\\n")
     end
   end
 
