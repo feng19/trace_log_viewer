@@ -43,34 +43,21 @@ defmodule TraceLogViewerWeb.TraceLogLive do
         {:ok, {content, path}}
       end)
 
-    entries = LogParser.parse(text)
-    stats = compute_stats(entries)
-
-    {:noreply,
-     socket
-     |> assign(:raw_text, text)
-     |> assign(:entries_empty?, entries == [])
-     |> assign(:stats, stats)
-     |> assign(:filter, "all")
-     |> assign(:search, "")
-     |> push_event("search_highlight", %{query: ""})
-     |> stream(:log_entries, entries, reset: true)}
+    {:noreply, load_log(socket, text)}
   end
 
   @impl true
   def handle_event("paste_log", %{"log_text" => text}, socket) do
-    entries = LogParser.parse(text)
-    stats = compute_stats(entries)
+    {:noreply, load_log(socket, text)}
+  end
 
-    {:noreply,
-     socket
-     |> assign(:raw_text, text)
-     |> assign(:entries_empty?, entries == [])
-     |> assign(:stats, stats)
-     |> assign(:filter, "all")
-     |> assign(:search, "")
-     |> push_event("search_highlight", %{query: ""})
-     |> stream(:log_entries, entries, reset: true)}
+  @impl true
+  def handle_event("restore_log", %{"raw_text" => text}, socket) when text != "" do
+    {:noreply, load_log(socket, text, persist?: false)}
+  end
+
+  def handle_event("restore_log", _params, socket) do
+    {:noreply, socket}
   end
 
   @impl true
@@ -117,6 +104,7 @@ defmodule TraceLogViewerWeb.TraceLogLive do
      |> assign(:filter, "all")
      |> assign(:search, "")
      |> push_event("search_highlight", %{query: ""})
+     |> push_event("clear_raw_text", %{})
      |> stream(:log_entries, [], reset: true)}
   end
 
@@ -141,18 +129,7 @@ defmodule TraceLogViewerWeb.TraceLogLive do
   @impl true
   def handle_event("load_sample", _params, socket) do
     sample = sample_trace_log()
-    entries = LogParser.parse(sample)
-    stats = compute_stats(entries)
-
-    {:noreply,
-     socket
-     |> assign(:raw_text, sample)
-     |> assign(:entries_empty?, entries == [])
-     |> assign(:stats, stats)
-     |> assign(:filter, "all")
-     |> assign(:search, "")
-     |> push_event("search_highlight", %{query: ""})
-     |> stream(:log_entries, entries, reset: true)}
+    {:noreply, load_log(socket, sample)}
   end
 
   # -------------------------------------------------------------------
@@ -164,6 +141,7 @@ defmodule TraceLogViewerWeb.TraceLogLive do
     ~H"""
     <Layouts.app flash={@flash}>
       <div id="trace-log-viewer" class="space-y-6" phx-hook="CopyToClipboard">
+        <div id="log-persistence" phx-hook="LogPersistence" class="hidden"></div>
         <%!-- Header --%>
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-3">
@@ -309,7 +287,7 @@ defmodule TraceLogViewerWeb.TraceLogLive do
               </button>
             </div>
             <div class="flex-1 min-w-[200px]">
-              <form phx-change="search" id="search-form">
+              <form phx-change="search" phx-submit="search" id="search-form">
                 <div class="relative">
                   <.icon
                     name="hero-magnifying-glass"
@@ -326,6 +304,15 @@ defmodule TraceLogViewerWeb.TraceLogLive do
                 </div>
               </form>
             </div>
+          </div>
+
+          <%!-- Key filter bar --%>
+          <div
+            id="key-filter-bar"
+            phx-hook="KeyFilter"
+            phx-update="ignore"
+            class="flex items-center gap-2 flex-wrap px-3 py-2 rounded-lg border border-base-300 bg-base-200/50 min-h-[2.5rem]"
+          >
           </div>
 
           <%!-- Log entries --%>
@@ -493,6 +480,24 @@ defmodule TraceLogViewerWeb.TraceLogLive do
   # -------------------------------------------------------------------
   # Private helpers
   # -------------------------------------------------------------------
+
+  defp load_log(socket, text, opts \\ []) do
+    persist? = Keyword.get(opts, :persist?, true)
+    entries = LogParser.parse(text)
+    stats = compute_stats(entries)
+
+    socket
+    |> assign(:raw_text, text)
+    |> assign(:entries_empty?, entries == [])
+    |> assign(:stats, stats)
+    |> assign(:filter, "all")
+    |> assign(:search, "")
+    |> push_event("search_highlight", %{query: ""})
+    |> then(fn s ->
+      if persist?, do: push_event(s, "save_raw_text", %{raw_text: text}), else: s
+    end)
+    |> stream(:log_entries, entries, reset: true)
+  end
 
   defp filter_entries(entries, "all"), do: entries
   defp filter_entries(entries, "calls"), do: Enum.filter(entries, &(&1.type == :call))

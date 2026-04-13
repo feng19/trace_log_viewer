@@ -1,7 +1,7 @@
 (function(){"use strict";try{if(typeof document<"u"){var e=document.createElement("style");e.appendChild(document.createTextNode(".edv-container{position:relative;background:#1a1b26;color:#c0caf5;font-family:Cascadia Code,Fira Code,Consolas,Courier New,monospace;font-size:14px;line-height:20px;height:100%;overflow:hidden;display:flex;flex-direction:column;tab-size:2;-moz-tab-size:2}.edv-inner{flex:1;min-height:0;overflow:auto}.edv-scroll{min-width:fit-content;padding:8px 0}.edv-line{display:flex;min-height:20px}.edv-line:hover{background:#292e42;outline:1px dashed #3b4261}.edv-gutter{display:flex;align-items:center;flex-shrink:0;padding-right:8px;padding-left:4px;user-select:none;-webkit-user-select:none;gap:2px}.edv-line-number{color:#3b4261;text-align:right;min-width:2.5em;padding-right:4px;font-variant-numeric:tabular-nums}.edv-line:hover .edv-line-number{color:#737aa2}.edv-fold-indicator{width:16px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;color:transparent;flex-shrink:0}.edv-fold-indicator.edv-foldable{cursor:pointer;color:#565f89;opacity:0;transition:opacity .15s ease}.edv-line:hover .edv-fold-indicator.edv-foldable,.edv-fold-indicator.edv-foldable[data-folded=true]{opacity:1}.edv-code{flex:1;white-space:pre;padding-left:8px;min-height:20px;border-left:1px solid #292e42}.edv-word-wrap .edv-scroll{min-width:unset}.edv-word-wrap .edv-code{white-space:pre-wrap;word-break:break-all;overflow-wrap:anywhere}.edv-word-wrap .edv-line{align-items:flex-start}.edv-string-truncated{display:inline-block;background:#292e42;color:#9ece6a;padding:0 5px;margin:0 2px;border-radius:3px;font-size:11px;cursor:pointer;border:1px solid #3b4261;line-height:16px;vertical-align:middle;white-space:nowrap}.edv-string-truncated:hover{background:#33394e;color:#9ece6a;border-color:#9ece6a}.edv-string-truncated--expanded{color:#565f89}.edv-string-truncated--expanded:hover{color:#9ece6a}.edv-fold-ellipsis{display:inline-block;background:#292e42;color:#7aa2f7;padding:0 5px;margin:0 2px;border-radius:3px;font-size:11px;cursor:pointer;border:1px solid #3b4261;line-height:16px;vertical-align:middle;white-space:nowrap}.edv-fold-ellipsis:hover{background:#33394e;color:#7aa2f7;border-color:#7aa2f7}.tok-atom{color:#2ac3de}.tok-namespace{color:#7dcfff}.tok-bool{color:#ff9e64}.tok-null{color:#2ac3de}.tok-number{color:#ff9e64}.tok-character{color:#9ece6a}.tok-variableName{color:#c0caf5}.tok-function,.tok-definition{color:#7aa2f7}.tok-special{color:#f7768e}.tok-string{color:#9ece6a}.tok-escape,.tok-keyword{color:#bb9af7}.tok-operator{color:#89ddff}.tok-comment{color:#565f89;font-style:italic}.tok-inspect-literal{color:#bb9af7}.tok-underscore{color:#565f89;font-style:italic}.tok-punctuation{color:#a9b1d6}.tok-separator,.tok-angleBracket{color:#89ddff}.tok-attributeName{color:#7dcfff}.tok-docString{color:#e0af68}.edv-inner::-webkit-scrollbar{width:10px;height:10px}.edv-inner::-webkit-scrollbar-track{background:#1a1b26}.edv-inner::-webkit-scrollbar-thumb{background:#3b4261;border-radius:5px}.edv-inner::-webkit-scrollbar-thumb:hover{background:#565f89}.edv-inner::-webkit-scrollbar-corner{background:#1a1b26}.edv-toolbar{position:absolute;top:4px;right:14px;z-index:10;display:flex;gap:2px;background:#1a1b26;border:1px solid #3b4261;border-radius:4px;padding:2px;opacity:0;transition:opacity .2s ease;pointer-events:none}.edv-container:hover .edv-toolbar{opacity:1;pointer-events:auto}.edv-toolbar-btn{background:transparent;border:1px solid transparent;color:#a9b1d6;width:26px;height:24px;border-radius:3px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;font-family:inherit;padding:0;line-height:1}.edv-toolbar-btn:hover{background:#292e42;border-color:#565f89;color:#c0caf5}.edv-toolbar-btn.edv-toolbar-btn--active{background:#292e42;border-color:#7aa2f7;color:#7aa2f7}.edv-search-bar{flex-shrink:0;z-index:20;display:none;align-items:center;gap:6px;padding:4px 8px;background:#1a1b26;border-bottom:1px solid #3b4261;font-size:13px}.edv-search-bar--visible{display:flex}.edv-search-input-wrapper{display:flex;align-items:center;background:#1a1b26;border:1px solid #3b4261;border-radius:3px;overflow:hidden}.edv-search-input-wrapper:focus-within{border-color:#7aa2f7}.edv-search-input{background:transparent;border:none;outline:none;color:#c0caf5;font-family:inherit;font-size:13px;padding:3px 6px;width:180px}.edv-search-input::placeholder{color:#565f89}.edv-search-case-btn{background:transparent;border:1px solid transparent;color:#565f89;cursor:pointer;font-size:12px;font-family:inherit;padding:2px 6px;border-radius:2px;margin-right:2px;line-height:1}.edv-search-case-btn:hover{color:#c0caf5;background:#292e42;border-color:#565f89}.edv-search-case-btn--active{color:#7aa2f7;background:#292e42;border-color:#7aa2f7}.edv-search-case-btn--active:hover{border-color:#c0caf5}.edv-search-info{color:#c0caf5;font-size:12px;min-width:70px;text-align:center;white-space:nowrap}.edv-search-info--no-results{color:#f7768e}.edv-search-nav-btn{background:transparent;border:1px solid transparent;color:#a9b1d6;cursor:pointer;width:24px;height:24px;border-radius:3px;font-size:14px;display:flex;align-items:center;justify-content:center;font-family:inherit;padding:0;line-height:1}.edv-search-nav-btn:hover{background:#292e42;border-color:#565f89}.edv-search-match{background:#e0af6866;border-radius:2px;color:inherit}.edv-search-current{background:#e0af68cc;border-radius:2px;color:#1a1b26}.edv-line--has-match .edv-line-number{color:#e0af68}.edv-search-match-truncated{background:#e0af6840;border-radius:2px}.edv-code [data-from]{cursor:pointer}.edv-inspect-token{background:#7aa2f733;border-radius:2px;outline:1px solid rgba(122,162,247,.4)}.edv-line.edv-inspect-line{background:#7aa2f70f}.edv-inspect-bracket{background:#7aa2f733;border-radius:2px;outline:1px solid rgba(122,162,247,.35)}@keyframes edv-inspect-flash{0%{background-color:#7aa2f773}to{background-color:#7aa2f733}}.edv-inspect-copied{animation:edv-inspect-flash .4s ease-out}.edv-copied-toast{position:fixed;background:#292e42;color:#7aa2f7;border:1px solid #7aa2f7;border-radius:4px;padding:2px 8px;font-size:12px;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;pointer-events:none;z-index:100;animation:edv-toast-fade 1.2s ease-out forwards}@keyframes edv-toast-fade{0%{opacity:1;transform:translateY(0)}70%{opacity:1}to{opacity:0;transform:translateY(-10px)}}.edv-filter-bar{flex-shrink:0;z-index:20;display:none;align-items:center;gap:6px;padding:4px 8px;background:#1a1b26;border-bottom:1px solid #3b4261;font-size:13px;flex-wrap:wrap}.edv-filter-bar--visible{display:flex}.edv-filter-input-wrapper{position:relative;display:flex;align-items:center;background:#1a1b26;border:1px solid #3b4261;border-radius:3px;overflow:visible}.edv-filter-input-wrapper:focus-within{border-color:#7aa2f7}.edv-filter-input{background:transparent;border:none;outline:none;color:#c0caf5;font-family:inherit;font-size:13px;padding:3px 6px;width:140px}.edv-filter-input::placeholder{color:#565f89}.edv-filter-tags{display:flex;gap:4px;flex-wrap:wrap;align-items:center}.edv-filter-tag{display:inline-flex;align-items:center;gap:2px;background:#292e42;border:1px solid #3b4261;border-radius:3px;padding:1px 4px 1px 6px;font-size:12px;color:#7aa2f7;white-space:nowrap;line-height:18px}.edv-filter-tag-label{color:#7aa2f7}.edv-filter-tag-remove{background:transparent;border:none;color:#565f89;cursor:pointer;font-size:10px;padding:0 2px;line-height:1;display:flex;align-items:center;justify-content:center;border-radius:2px}.edv-filter-tag-remove:hover{color:#f7768e;background:#f7768e26}.edv-filter-info{color:#c0caf5;font-size:12px;white-space:nowrap;margin-left:auto}.edv-filter-dropdown{display:none;position:absolute;top:100%;left:-1px;right:-1px;background:#1a1b26;border:1px solid #3b4261;border-top:none;border-radius:0 0 3px 3px;max-height:160px;overflow-y:auto;z-index:30}.edv-filter-dropdown--visible{display:block}.edv-filter-dropdown-item{padding:4px 8px;cursor:pointer;font-size:13px;color:#c0caf5;white-space:nowrap}.edv-filter-dropdown-item:hover,.edv-filter-dropdown-item--active{background:#292e42;color:#7aa2f7}.edv-filter-dropdown::-webkit-scrollbar{width:6px}.edv-filter-dropdown::-webkit-scrollbar-track{background:#1a1b26}.edv-filter-dropdown::-webkit-scrollbar-thumb{background:#3b4261;border-radius:3px}")),document.head.appendChild(e)}}catch(o){console.error("vite-plugin-css-injected-by-js",o)}})();
 var Xt = Object.defineProperty;
 var ct = (r, O, e) => O in r ? Xt(r, O, { enumerable: !0, configurable: !0, writable: !0, value: e }) : r[O] = e;
-var Q = (r, O, e) => ct(r, typeof O != "symbol" ? O + "" : O, e);
+var d = (r, O, e) => ct(r, typeof O != "symbol" ? O + "" : O, e);
 let ut = 0;
 class BO {
   constructor(O, e) {
@@ -517,8 +517,8 @@ class I extends Ie {
             let p;
             if (!(n & U.IgnoreMounts) && (p = yO.get(u)) && !p.overlay)
               return new I(p.tree, X, O, a);
-            let d = new I(u, X, O, a);
-            return n & U.IncludeAnonymous || !d.type.isAnonymous ? d : d.nextChild(e < 0 ? u.children.length - 1 : 0, e, t, i, n);
+            let Q = new I(u, X, O, a);
+            return n & U.IncludeAnonymous || !Q.type.isAnonymous ? Q : Q.nextChild(e < 0 ? u.children.length - 1 : 0, e, t, i, n);
           }
         }
       }
@@ -1115,8 +1115,8 @@ function gt(r) {
       s.next();
       let G = [], N = [], XO = k >= a ? k : -1, dO = 0, _O = W;
       for (; s.pos > H; )
-        XO >= 0 && s.id == XO && s.size >= 0 ? (s.end <= _O - i && (d(G, N, x, dO, s.end, _O, XO, V, eO), dO = G.length, _O = s.end), s.next()) : j > 2500 ? c(x, H, G, N) : X(x, H, G, N, XO, j + 1);
-      if (XO >= 0 && dO > 0 && dO < G.length && d(G, N, x, dO, x, _O, XO, V, eO), G.reverse(), N.reverse(), XO > -1 && dO > 0) {
+        XO >= 0 && s.id == XO && s.size >= 0 ? (s.end <= _O - i && (Q(G, N, x, dO, s.end, _O, XO, V, eO), dO = G.length, _O = s.end), s.next()) : j > 2500 ? c(x, H, G, N) : X(x, H, G, N, XO, j + 1);
+      if (XO >= 0 && dO > 0 && dO < G.length && Q(G, N, x, dO, x, _O, XO, V, eO), G.reverse(), N.reverse(), XO > -1 && dO > 0) {
         let ge = p(mO, eO);
         WO = ce(mO, G, N, 0, G.length, 0, W - x, ge, ge);
       } else
@@ -1154,7 +1154,7 @@ function gt(r) {
       return $(b, g, Y, P, j, _);
     };
   }
-  function d(b, _, g, Y, P, j, k, x, W) {
+  function Q(b, _, g, Y, P, j, k, x, W) {
     let w = [], V = [];
     for (; b.length > Y; )
       w.push(b.pop()), V.push(_.pop() + g - P);
@@ -1235,31 +1235,31 @@ function RO(r, O) {
 }
 function ce(r, O, e, t, i, n, a, s, l) {
   let o = 0;
-  for (let d = t; d < i; d++)
-    o += RO(r, O[d]);
+  for (let Q = t; Q < i; Q++)
+    o += RO(r, O[Q]);
   let u = Math.ceil(
     o * 1.5 / 8
     /* Balance.BranchFactor */
   ), X = [], c = [];
-  function p(d, $, S, v, q) {
+  function p(Q, $, S, v, q) {
     for (let y = S; y < v; ) {
-      let z = y, b = $[y], _ = RO(r, d[y]);
+      let z = y, b = $[y], _ = RO(r, Q[y]);
       for (y++; y < v; y++) {
-        let g = RO(r, d[y]);
+        let g = RO(r, Q[y]);
         if (_ + g >= u)
           break;
         _ += g;
       }
       if (y == z + 1) {
         if (_ > u) {
-          let g = d[z];
+          let g = Q[z];
           p(g.children, g.positions, 0, g.children.length, $[z] + q);
           continue;
         }
-        X.push(d[z]);
+        X.push(Q[z]);
       } else {
-        let g = $[y - 1] + d[y - 1].length - b;
-        X.push(ce(r, d, $, z, y, b, g, null, l));
+        let g = $[y - 1] + Q[y - 1].length - b;
+        X.push(ce(r, Q, $, z, y, b, g, null, l));
       }
       c.push(b + q - n);
     }
@@ -1934,9 +1934,9 @@ function vt(r, O, e, t, i, n) {
     let o = r[a + 1];
     for (let p = a + 3; p < o; p += 2)
       if ((r[p + 1] & s) > 0) {
-        let d = r[p];
-        if (l.allows(d) && (O.token.value == -1 || O.token.value == d || St(d, O.token.value, i, n))) {
-          O.acceptToken(d);
+        let Q = r[p];
+        if (l.allows(Q) && (O.token.value == -1 || O.token.value == Q || St(Q, O.token.value, i, n))) {
+          O.acceptToken(Q);
           break;
         }
       }
@@ -1946,13 +1946,13 @@ function vt(r, O, e, t, i, n) {
       continue O;
     }
     for (; X < c; ) {
-      let p = X + c >> 1, d = o + p + (p << 1), $ = r[d], S = r[d + 1] || 65536;
+      let p = X + c >> 1, Q = o + p + (p << 1), $ = r[Q], S = r[Q + 1] || 65536;
       if (u < $)
         c = p;
       else if (u >= S)
         X = p + 1;
       else {
-        a = r[d + 2], O.advance();
+        a = r[Q + 2], O.advance();
         continue O;
       }
     }
@@ -2240,13 +2240,13 @@ class Pt {
         ;
     let l = this.tokens.getActions(O);
     for (let o = 0; o < l.length; ) {
-      let u = l[o++], X = l[o++], c = l[o++], p = o == l.length || !t, d = p ? O : O.split(), $ = this.tokens.mainToken;
-      if (d.apply(u, X, $ ? $.start : d.pos, c), C && console.log(a + this.stackID(d) + ` (via ${u & 65536 ? `reduce of ${n.getName(
+      let u = l[o++], X = l[o++], c = l[o++], p = o == l.length || !t, Q = p ? O : O.split(), $ = this.tokens.mainToken;
+      if (Q.apply(u, X, $ ? $.start : Q.pos, c), C && console.log(a + this.stackID(Q) + ` (via ${u & 65536 ? `reduce of ${n.getName(
         u & 65535
         /* Action.ValueMask */
-      )}` : "shift"} for ${n.getName(X)} @ ${i}${d == O ? "" : ", split"})`), p)
+      )}` : "shift"} for ${n.getName(X)} @ ${i}${Q == O ? "" : ", split"})`), p)
         return !0;
-      d.pos > i ? e.push(d) : t.push(d);
+      Q.pos > i ? e.push(Q) : t.push(Q);
     }
     return !1;
   }
@@ -2779,7 +2779,7 @@ class Rt {
       return;
     let c = O.tree && O.tree.prop(T.mounted);
     if (c && c.overlay) {
-      let p = O.node.enter(c.overlay[0].from + s, 1), d = this.highlighters.filter((S) => !S.scope || S.scope(c.tree.type)), $ = O.firstChild();
+      let p = O.node.enter(c.overlay[0].from + s, 1), Q = this.highlighters.filter((S) => !S.scope || S.scope(c.tree.type)), $ = O.firstChild();
       for (let S = 0, v = s; ; S++) {
         let q = S < c.overlay.length ? c.overlay[S] : null, y = q ? q.from + s : l, z = Math.max(e, v), b = Math.min(t, y);
         if (z < b && $)
@@ -2787,7 +2787,7 @@ class Rt {
             ;
         if (!q || y > t)
           break;
-        v = q.to + s, v > e && (this.highlightRange(p.cursor(), Math.max(e, q.from + s), Math.min(t, v), "", d), this.startSpan(Math.min(t, v), o));
+        v = q.to + s, v > e && (this.highlightRange(p.cursor(), Math.max(e, q.from + s), Math.min(t, v), "", Q), this.startSpan(Math.min(t, v), o));
       }
       $ && O.parent();
     } else if (O.firstChild()) {
@@ -3827,11 +3827,11 @@ function tr(r) {
 class ir {
   constructor() {
     /** Set of startLine indices that are currently folded */
-    Q(this, "foldedLines", /* @__PURE__ */ new Set());
+    d(this, "foldedLines", /* @__PURE__ */ new Set());
     /** Map from startLine to FoldRegion */
-    Q(this, "regionMap", /* @__PURE__ */ new Map());
+    d(this, "regionMap", /* @__PURE__ */ new Map());
     /** All fold regions sorted by startLine */
-    Q(this, "regions", []);
+    d(this, "regions", []);
   }
   /**
    * Update the fold regions (called when content changes).
@@ -3917,10 +3917,10 @@ class ir {
 }
 class rr {
   constructor() {
-    Q(this, "query", "");
-    Q(this, "caseSensitive", !1);
-    Q(this, "matches", []);
-    Q(this, "currentIndex", -1);
+    d(this, "query", "");
+    d(this, "caseSensitive", !1);
+    d(this, "matches", []);
+    d(this, "currentIndex", -1);
   }
   /**
    * Perform a search across all lines.
@@ -4038,11 +4038,11 @@ class rr {
 class nr {
   constructor() {
     /** Keys to filter out (hide) */
-    Q(this, "filteredKeys", /* @__PURE__ */ new Set());
+    d(this, "filteredKeys", /* @__PURE__ */ new Set());
     /** All detected key-value ranges from the parsed content */
-    Q(this, "keyRanges", []);
+    d(this, "keyRanges", []);
     /** Pre-computed set of hidden line indices (rebuilt when filter changes) */
-    Q(this, "hiddenLines", /* @__PURE__ */ new Set());
+    d(this, "hiddenLines", /* @__PURE__ */ new Set());
   }
   /**
    * Detect all key-value ranges from the syntax tree and source code.
@@ -4308,53 +4308,54 @@ function fr(r) {
 const JO = 128;
 class dr {
   constructor(O, e) {
-    Q(this, "container");
-    Q(this, "innerEl");
-    Q(this, "scrollEl");
-    Q(this, "toolbarEl", null);
-    Q(this, "wrapBtn", null);
-    Q(this, "copyBtn", null);
-    Q(this, "searchBtn", null);
-    Q(this, "filterBtn", null);
-    Q(this, "copyResetTimer", null);
-    Q(this, "code", "");
-    Q(this, "lines", []);
-    Q(this, "lineOffsets", []);
-    Q(this, "tokens", []);
-    Q(this, "tree", null);
-    Q(this, "foldState", new ir());
-    Q(this, "filterState", new nr());
-    Q(this, "defaultFoldLevel", 0);
-    Q(this, "defaultFilterKeys", []);
-    Q(this, "searchState", new rr());
-    Q(this, "onRenderCallback", null);
-    Q(this, "wordWrap", !1);
-    Q(this, "toolbarConfig");
+    d(this, "container");
+    d(this, "innerEl");
+    d(this, "scrollEl");
+    d(this, "toolbarEl", null);
+    d(this, "wrapBtn", null);
+    d(this, "copyBtn", null);
+    d(this, "searchBtn", null);
+    d(this, "filterBtn", null);
+    d(this, "copyResetTimer", null);
+    d(this, "code", "");
+    d(this, "lines", []);
+    d(this, "lineOffsets", []);
+    d(this, "tokens", []);
+    d(this, "tree", null);
+    d(this, "foldState", new ir());
+    d(this, "filterState", new nr());
+    d(this, "defaultFoldLevel", 0);
+    d(this, "defaultFilterKeys", []);
+    d(this, "searchState", new rr());
+    d(this, "onRenderCallback", null);
+    d(this, "wordWrap", !1);
+    d(this, "toolbarConfig");
+    d(this, "suppressScrollOnRender", !1);
     // Search UI elements
-    Q(this, "searchBarEl", null);
-    Q(this, "searchInputEl", null);
-    Q(this, "searchInfoEl", null);
-    Q(this, "searchCaseBtn", null);
-    Q(this, "searchVisible", !1);
+    d(this, "searchBarEl", null);
+    d(this, "searchInputEl", null);
+    d(this, "searchInfoEl", null);
+    d(this, "searchCaseBtn", null);
+    d(this, "searchVisible", !1);
     // Filter UI elements
-    Q(this, "filterBarEl", null);
-    Q(this, "filterInputEl", null);
-    Q(this, "filterTagsEl", null);
-    Q(this, "filterInfoEl", null);
-    Q(this, "filterDropdownEl", null);
-    Q(this, "filterCopyBtn", null);
-    Q(this, "filterCopyResetTimer", null);
-    Q(this, "filterVisible", !1);
-    Q(this, "filterDropdownIndex", -1);
-    Q(this, "filterDropdownItems", []);
+    d(this, "filterBarEl", null);
+    d(this, "filterInputEl", null);
+    d(this, "filterTagsEl", null);
+    d(this, "filterInfoEl", null);
+    d(this, "filterDropdownEl", null);
+    d(this, "filterCopyBtn", null);
+    d(this, "filterCopyResetTimer", null);
+    d(this, "filterVisible", !1);
+    d(this, "filterDropdownIndex", -1);
+    d(this, "filterDropdownItems", []);
     // Inspect state
-    Q(this, "currentInspect", null);
-    Q(this, "inspectCallback", null);
+    d(this, "currentInspect", null);
+    d(this, "inspectCallback", null);
     // Pre-processed inspect literals (#Reference<...>, #PID<...>, etc.)
-    Q(this, "inspectLiterals", []);
+    d(this, "inspectLiterals", []);
     // Long string truncation
-    Q(this, "longStrings", /* @__PURE__ */ new Map());
-    Q(this, "expandedStrings", /* @__PURE__ */ new Set());
+    d(this, "longStrings", /* @__PURE__ */ new Map());
+    d(this, "expandedStrings", /* @__PURE__ */ new Set());
     this.container = O, this.container.classList.add("edv-container"), this.defaultFoldLevel = (e == null ? void 0 : e.defaultFoldLevel) ?? 0, this.defaultFilterKeys = (e == null ? void 0 : e.defaultFilterKeys) ?? [], this.wordWrap = (e == null ? void 0 : e.defaultWordWrap) ?? !1;
     const t = (e == null ? void 0 : e.toolbar) ?? {};
     this.toolbarConfig = {
@@ -4550,17 +4551,19 @@ class dr {
    *
    * @param query - The keyword to search for. Pass an empty string to clear.
    * @param options - Optional settings. `caseSensitive` defaults to the
-   *                  current case-sensitivity state.
+   *                  current case-sensitivity state. `scroll` defaults to
+   *                  `true`; set to `false` to suppress automatic scrolling
+   *                  (useful when searching across multiple instances).
    */
   search(O, e) {
-    var n;
-    const t = (e == null ? void 0 : e.caseSensitive) ?? this.searchState.isCaseSensitive();
-    this.searchState.search(this.lines, O, t), this.searchInputEl && (this.searchInputEl.value = O), (n = this.searchCaseBtn) == null || n.classList.toggle(
+    var a;
+    const t = (e == null ? void 0 : e.caseSensitive) ?? this.searchState.isCaseSensitive(), i = (e == null ? void 0 : e.scroll) !== !1;
+    this.searchState.search(this.lines, O, t), this.searchInputEl && (this.searchInputEl.value = O), (a = this.searchCaseBtn) == null || a.classList.toggle(
       "edv-search-case-btn--active",
       t
     ), this.updateSearchInfo();
-    const i = this.searchState.getCurrentMatch();
-    i && this.revealAndScrollToMatch(i), this.render();
+    const n = this.searchState.getCurrentMatch();
+    n && this.revealAndScrollToMatch(n), i || (this.suppressScrollOnRender = !0), this.render();
   }
   /**
    * Clear the current search state and remove all highlights.
@@ -4993,7 +4996,7 @@ class dr {
       );
       this.scrollEl.appendChild(o), t++;
     }
-    (i = this.onRenderCallback) == null || i.call(this), this.searchState.isActive() && this.searchState.getCurrentMatch() && requestAnimationFrame(() => this.scrollToCurrentMatch());
+    (i = this.onRenderCallback) == null || i.call(this), this.searchState.isActive() && this.searchState.getCurrentMatch() && !this.suppressScrollOnRender && requestAnimationFrame(() => this.scrollToCurrentMatch()), this.suppressScrollOnRender = !1;
   }
   /**
    * Create a single line element with gutter and code content.
@@ -5050,7 +5053,7 @@ class dr {
         }
         const o = s + JO, u = Array.from(O.children);
         let X = null;
-        const c = this.lineOffsets[i.line], d = this.searchState.getLineMatches(i.line).some((S) => {
+        const c = this.lineOffsets[i.line], Q = this.searchState.getLineMatches(i.line).some((S) => {
           const v = c + S.from;
           return c + S.to > o && v < l;
         });
@@ -5058,12 +5061,12 @@ class dr {
           const v = parseInt(S.dataset.from ?? "", 10), q = parseInt(S.dataset.to ?? "", 10);
           if (!(isNaN(v) || isNaN(q)) && !(q <= i.from || v >= i.to)) {
             if (q <= o) {
-              d && v >= s && S.classList.add("edv-search-match-truncated");
+              Q && v >= s && S.classList.add("edv-search-match-truncated");
               continue;
             }
             if (v < o && q > o) {
               const y = o - v;
-              this.truncateElementText(S, y), d && v >= s && S.classList.add("edv-search-match-truncated");
+              this.truncateElementText(S, y), Q && v >= s && S.classList.add("edv-search-match-truncated");
               continue;
             }
             if (v >= o && v < l) {
@@ -5074,7 +5077,7 @@ class dr {
           }
         }
         const $ = this.createStringBadge(i, !1);
-        d && $.classList.add("edv-search-match-truncated"), X ? O.insertBefore($, X) : O.appendChild($);
+        Q && $.classList.add("edv-search-match-truncated"), X ? O.insertBefore($, X) : O.appendChild($);
       }
   }
   /**
@@ -5150,21 +5153,21 @@ class dr {
         l[c] = X;
     let o = 0;
     for (; o < e.length; ) {
-      const X = a[o], c = l[o], p = c !== null, d = c ? this.searchState.isCurrentMatch(n, c.from) : !1;
+      const X = a[o], c = l[o], p = c !== null, Q = c ? this.searchState.isCurrentMatch(n, c.from) : !1;
       let $ = o + 1;
       for (; $ < e.length; ) {
         const S = a[$], v = l[$], q = v !== null, y = v ? this.searchState.isCurrentMatch(n, v.from) : !1;
-        if (S !== X || q !== p || y !== d) break;
+        if (S !== X || q !== p || y !== Q) break;
         $++;
       }
-      s.push({ from: o, to: $, tokenClass: X, isMatch: p, isCurrent: d }), o = $;
+      s.push({ from: o, to: $, tokenClass: X, isMatch: p, isCurrent: Q }), o = $;
     }
     const u = this.lineOffsets[n];
     for (const X of s) {
-      const c = e.slice(X.from, X.to), p = u + X.from, d = u + X.to;
+      const c = e.slice(X.from, X.to), p = u + X.from, Q = u + X.to;
       if (X.isMatch) {
         const $ = document.createElement("mark");
-        if ($.classList.add("edv-search-match"), X.isCurrent && $.classList.add("edv-search-current"), $.dataset.from = String(p), $.dataset.to = String(d), X.tokenClass) {
+        if ($.classList.add("edv-search-match"), X.isCurrent && $.classList.add("edv-search-current"), $.dataset.from = String(p), $.dataset.to = String(Q), X.tokenClass) {
           const S = document.createElement("span");
           S.className = X.tokenClass, S.textContent = c, $.appendChild(S);
         } else
@@ -5172,10 +5175,10 @@ class dr {
         O.appendChild($);
       } else if (X.tokenClass) {
         const $ = document.createElement("span");
-        $.className = X.tokenClass, $.dataset.from = String(p), $.dataset.to = String(d), $.textContent = c, O.appendChild($);
+        $.className = X.tokenClass, $.dataset.from = String(p), $.dataset.to = String(Q), $.textContent = c, O.appendChild($);
       } else {
         const $ = document.createElement("span");
-        $.dataset.from = String(p), $.dataset.to = String(d), $.textContent = c, O.appendChild($);
+        $.dataset.from = String(p), $.dataset.to = String(Q), $.textContent = c, O.appendChild($);
       }
     }
   }
@@ -5187,8 +5190,8 @@ class dr {
     let l = 0;
     for (const c of s) {
       if (c.from > l) {
-        const d = document.createElement("span");
-        d.dataset.from = String(n + l), d.dataset.to = String(n + c.from), d.textContent = i.slice(l, c.from), O.appendChild(d);
+        const Q = document.createElement("span");
+        Q.dataset.from = String(n + l), Q.dataset.to = String(n + c.from), Q.textContent = i.slice(l, c.from), O.appendChild(Q);
       }
       const p = document.createElement("span");
       p.className = c.classes, p.dataset.from = String(n + c.from), p.dataset.to = String(n + c.to), p.textContent = i.slice(c.from, c.to), O.appendChild(p), l = c.to;
