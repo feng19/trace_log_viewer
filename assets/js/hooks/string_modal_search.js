@@ -1,5 +1,9 @@
 const StringModalSearch = {
   mounted() {
+    // Lock background scroll while modal is open
+    this._prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
     this._input = this.el.querySelector("[data-search-input]");
     this._content = this.el.querySelector("[data-search-content]");
     this._counter = this.el.querySelector("[data-match-count]");
@@ -40,6 +44,11 @@ const StringModalSearch = {
       }
     };
     this.el.addEventListener("keydown", this._keyHandler);
+  },
+
+  destroyed() {
+    // Restore background scroll when modal closes
+    document.body.style.overflow = this._prevOverflow || "";
   },
 
   updated() {

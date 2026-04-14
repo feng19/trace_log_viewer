@@ -23,6 +23,7 @@ defmodule TraceLogViewerWeb.TraceLogLive do
      |> assign(:stats, %{total: 0, calls: 0, returns: 0})
      |> assign(:string_modal_content, nil)
      |> assign(:string_modal_tab, "raw")
+     |> assign(:show_upload_modal, false)
      |> allow_upload(:log_file, accept: :any, max_entries: 1, max_file_size: 50_000_000)}
   end
 
@@ -43,12 +44,28 @@ defmodule TraceLogViewerWeb.TraceLogLive do
         {:ok, {content, path}}
       end)
 
-    {:noreply, load_log(socket, text)}
+    {:noreply,
+     socket
+     |> assign(:show_upload_modal, false)
+     |> load_log(text)}
   end
 
   @impl true
   def handle_event("paste_log", %{"log_text" => text}, socket) do
-    {:noreply, load_log(socket, text)}
+    {:noreply,
+     socket
+     |> assign(:show_upload_modal, false)
+     |> load_log(text)}
+  end
+
+  @impl true
+  def handle_event("open_upload_modal", _params, socket) do
+    {:noreply, assign(socket, :show_upload_modal, true)}
+  end
+
+  @impl true
+  def handle_event("close_upload_modal", _params, socket) do
+    {:noreply, assign(socket, :show_upload_modal, false)}
   end
 
   @impl true
@@ -154,9 +171,18 @@ defmodule TraceLogViewerWeb.TraceLogLive do
             </div>
           </div>
           <%= if @stats.total > 0 do %>
-            <button phx-click="clear" class="btn btn-sm btn-ghost text-error gap-1">
-              <.icon name="hero-trash" class="size-4" /> Clear
-            </button>
+            <div class="flex items-center gap-2">
+              <button
+                id="open-upload-modal-btn"
+                phx-click="open_upload_modal"
+                class="btn btn-sm btn-ghost text-primary gap-1"
+              >
+                <.icon name="hero-arrow-up-tray" class="size-4" /> Upload New Logs
+              </button>
+              <button phx-click="clear" class="btn btn-sm btn-ghost text-error gap-1">
+                <.icon name="hero-trash" class="size-4" /> Clear
+              </button>
+            </div>
           <% end %>
         </div>
 
@@ -326,11 +352,116 @@ defmodule TraceLogViewerWeb.TraceLogLive do
           </div>
         <% end %>
 
+        <%!-- Upload new logs modal --%>
+        <%= if @show_upload_modal do %>
+          <div
+            id="upload-modal-overlay"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fade-in overscroll-contain overflow-hidden"
+          >
+            <div
+              id="upload-modal"
+              class="relative mx-4 max-w-4xl w-full flex flex-col bg-base-100 rounded-2xl shadow-2xl border border-base-300 animate-scale-in"
+              phx-click-away="close_upload_modal"
+            >
+              <%!-- Modal header --%>
+              <div class="flex items-center justify-between px-4 py-3 border-b border-base-300">
+                <div class="flex items-center gap-2">
+                  <div class="p-1.5 rounded-lg bg-primary/10">
+                    <.icon name="hero-arrow-up-tray" class="size-4 text-primary" />
+                  </div>
+                  <span class="font-semibold text-sm">Replace Logs</span>
+                </div>
+                <button
+                  phx-click="close_upload_modal"
+                  class="p-1 rounded-lg text-base-content/40 hover:text-error hover:bg-error/10 transition-all duration-150 cursor-pointer"
+                >
+                  <.icon name="hero-x-mark" class="size-4" />
+                </button>
+              </div>
+              <%!-- Modal body --%>
+              <div class="flex-1 overflow-auto p-5 space-y-4">
+                <%!-- File upload --%>
+                <form
+                  id="modal-upload-form"
+                  phx-change="validate_upload"
+                  phx-submit="upload_log"
+                >
+                  <div class="border-2 border-dashed border-base-300 rounded-xl p-5 text-center hover:border-primary/50 transition-colors duration-200 bg-base-200/30">
+                    <.live_file_input upload={@uploads.log_file} class="hidden" />
+                    <div class="flex flex-col items-center gap-2">
+                      <.icon
+                        name="hero-arrow-up-tray"
+                        class="size-6 text-base-content/40"
+                      />
+                      <p class="text-sm text-base-content/60">
+                        Drop file here or
+                        <label
+                          for={@uploads.log_file.ref}
+                          class="text-primary font-medium cursor-pointer hover:underline"
+                        >
+                          browse
+                        </label>
+                      </p>
+                    </div>
+                    <%= for entry <- @uploads.log_file.entries do %>
+                      <div class="mt-3 flex items-center gap-2 justify-center">
+                        <.icon
+                          name="hero-document-text"
+                          class="size-5 text-success"
+                        />
+                        <span class="text-sm font-medium">
+                          {entry.client_name}
+                        </span>
+                        <span class="text-xs text-base-content/50">
+                          ({format_size(entry.client_size)})
+                        </span>
+                      </div>
+                    <% end %>
+                    <%= if @uploads.log_file.entries != [] do %>
+                      <button
+                        type="submit"
+                        class="btn btn-primary btn-sm mt-3 gap-1"
+                      >
+                        <.icon name="hero-arrow-up-tray" class="size-4" />
+                        Replace
+                      </button>
+                    <% end %>
+                  </div>
+                </form>
+                <%!-- Divider --%>
+                <div class="flex items-center gap-2 text-base-content/30">
+                  <div class="flex-1 border-t border-base-300"></div>
+                  <span class="text-xs uppercase tracking-wider font-medium">
+                    or paste
+                  </span>
+                  <div class="flex-1 border-t border-base-300"></div>
+                </div>
+                <%!-- Paste area --%>
+                <form id="modal-paste-form" phx-submit="paste_log">
+                  <textarea
+                    name="log_text"
+                    id="modal-paste-textarea"
+                    rows="6"
+                    phx-mounted={JS.focus()}
+                    placeholder="Paste trace log content here..."
+                    class="w-full rounded-lg border border-base-300 bg-base-200/30 p-4 font-mono text-sm leading-relaxed focus:border-primary focus:ring-1 focus:ring-primary/30 resize-y placeholder:text-base-content/30"
+                  ></textarea>
+                  <div class="flex justify-end mt-3">
+                    <button type="submit" class="btn btn-primary btn-sm gap-1">
+                      <.icon name="hero-play" class="size-4" /> Replace
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
         <%!-- String content modal --%>
         <%= if @string_modal_content do %>
           <div
             id="string-modal-overlay"
-            class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fade-in"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fade-in overscroll-contain overflow-hidden"
           >
             <div
               id="string-modal"
