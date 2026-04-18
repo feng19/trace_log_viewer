@@ -1,0 +1,3 @@
+#!/bin/bash
+
+PORT=4001 _build/prod/rel/trace_log_viewer/bin/trace_log_viewer daemon
